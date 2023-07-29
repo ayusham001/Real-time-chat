@@ -1,0 +1,19 @@
+{
+  "name": "ass7",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ayusham001/Real-time-chat.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ayusham001/Real-time-chat/issues"
+  },
+  "homepage": "https://github.com/ayusham001/Real-time-chat#readme"
+}
