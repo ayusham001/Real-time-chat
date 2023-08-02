@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Socket.IO chat</title>
-    <style>
+  <style>
     body {
       margin: 0;
       padding-bottom: 3rem;
@@ -59,6 +60,7 @@
     }
   </style>
 </head>
+
 <body>
   <h1>Active Users:</h1>
   <ul id="active-users"></ul>
@@ -86,13 +88,7 @@
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (input.value) {
-        if (input.value.startsWith('/msg ')) { // Check if it's a private message
-          const [command, recipient, ...messageArr] = input.value.split(' ');
-          const message = messageArr.join(' ');
-          socket.emit('private message', { recipient, message });
-        } else {
-          socket.emit('chat message', input.value, recipientInput.value);
-        }
+        socket.emit('chat message', input.value, recipientInput.value);
         input.value = '';
       }
     });
@@ -144,13 +140,10 @@
 
     socket.on('private message', function (msg) {
       var item = document.createElement('li');
-      if (msg.recipient === currentUser || msg.nickname === currentUser) {
-        item.textContent = `Private message from ${msg.nickname}: ${msg.msg}`;
-      } else {
-        item.textContent = `Private message to ${msg.recipient} from ${msg.nickname}: [hidden]`;
-      }
+      item.textContent = `Private message from ${msg.nickname}: ${msg.msg}`;
       messages.appendChild(item);
     });
   </script>
 </body>
+
 </html>
