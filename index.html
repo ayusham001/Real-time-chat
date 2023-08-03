@@ -18,6 +18,7 @@
       left: 0;
       right: 0;
       display: flex;
+      flex-wrap: wrap;
       height: 3rem;
       box-sizing: border-box;
       backdrop-filter: blur(10px);
@@ -31,6 +32,13 @@
       margin: 0.25rem;
     }
 
+    #recipient{
+      border: none;
+      padding: 0 1rem;
+      border-radius: 2rem;
+      margin: 0.25rem;
+    }
+
     #input:focus {
       outline: none;
     }
@@ -40,7 +48,7 @@
       border: none;
       padding: 0 1rem;
       margin: 0.25rem;
-      border-radius: 3px;
+      border-radius: 2rem;
       outline: none;
       color: #fff;
     }
@@ -67,7 +75,9 @@
   <ul id="messages"></ul>
   <form id="form" action="">
     <input id="input" autocomplete="off" placeholder="Enter message" />
-    <input id="recipient" autocomplete="off" placeholder="Recipient (Optional)" />
+    <select id="recipient">
+      <option value="">--select--</option>
+    </select>
     <button>Send</button>
   </form>
   <script src="index.js"></script>
@@ -105,6 +115,11 @@
         var activeUserItem = document.createElement('li');
         activeUserItem.textContent = user;
         activeUsersList.appendChild(activeUserItem);
+
+        var activeUserOption = document.createElement('option');
+        activeUserOption.textContent = user;
+        activeUserOption.value = user;
+        recipientInput.appendChild(activeUserOption);
       });
     }
 
