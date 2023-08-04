@@ -32,7 +32,7 @@
       margin: 0.25rem;
     }
 
-    #recipient{
+    #recipient {
       border: none;
       padding: 0 1rem;
       border-radius: 2rem;
@@ -105,12 +105,18 @@
 
     socket.on('chat message', function (msg) {
       var item = document.createElement('li');
-      item.textContent = `${msg.nickname}: ${msg.msg}`;
-      messages.appendChild(item);
+      if (currentUser === msg.nickname) {
+        item.innerHTML = `<b>You</b>: ${msg.msg}`;
+        messages.appendChild(item);
+      } else {
+        item.innerHTML = `<b>${msg.nickname}</b>: ${msg.msg}`;
+        messages.appendChild(item);
+      }
     });
 
     function updateActiveUsers(activeUsers) {
       activeUsersList.innerHTML = ''; // Clear the existing list
+      recipientInput.innerHTML = ''; // Clear the existing list
       activeUsers.forEach(user => {
         var activeUserItem = document.createElement('li');
         activeUserItem.textContent = user;
@@ -145,9 +151,11 @@
 
       // Remove the user from the active users list
       const userListItems = activeUsersList.getElementsByTagName('li');
+      const userListOption = recipientInput.getElementsByTagName('option');
       for (let i = 0; i < userListItems.length; i++) {
         if (userListItems[i].textContent === nickname) {
           activeUsersList.removeChild(userListItems[i]);
+          recipientInput.removeChild(userListOption[i]);
           break;
         }
       }
@@ -155,8 +163,14 @@
 
     socket.on('private message', function (msg) {
       var item = document.createElement('li');
-      item.textContent = `Private message from ${msg.nickname}: ${msg.msg}`;
-      messages.appendChild(item);
+      if (currentUser === msg.nickname) {
+        item.innerHTML = `Private message from <b>You</b> to <b>${msg.recipient}</b>: ${msg.msg}`;
+        messages.appendChild(item);
+      }
+      else {
+        item.innerHTML = `Private message from <b>${msg.nickname}</b> to <b>You</b>: ${msg.msg}`;
+        messages.appendChild(item);
+      }
     });
   </script>
 </body>
