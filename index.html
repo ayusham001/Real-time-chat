@@ -173,7 +173,7 @@
   socket.on('private message', function (msg) {
     var item = document.createElement('li');
     if (msg.nickname === currentUser) {
-      item.innerHTML = `Private message from <b>You</b> to <b>${msg.nickname}</b>: ${msg.msg}`;
+      item.innerHTML = `Private message from <b>You</b> to <b>${msg.recipient}</b>: ${msg.msg}`;
       messages.appendChild(item);
     }
     else {
