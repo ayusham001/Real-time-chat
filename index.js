@@ -5,6 +5,8 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+app.use(express.static(__dirname));
+
 const connectedUsers = {};
 
 app.get('/', (req, res) => {
@@ -15,9 +17,11 @@ io.on('connection', (socket) => {
   console.log('a user connected:', socket.id);
 
   socket.on('setNickname', (nickname) => {
-    if (!connectedUsers[socket.id]) { // Check if nickname is not already set for the socket
+    if (!connectedUsers[socket.id]) {
       connectedUsers[socket.id] = { nickname, connection: socket };
       io.emit('user connected', nickname);
+
+      // Emit the list of active users only if the nickname is not already present
       const activeUsers = Object.values(connectedUsers).map(user => user.nickname);
       io.emit('active users', activeUsers);
     }
@@ -53,14 +57,12 @@ io.on('connection', (socket) => {
       io.emit('chat message', { nickname: senderNickname, msg: msg });
     }
   });
-  
-
 
   socket.on('disconnect', () => {
-    const nickname = connectedUsers[socket.id] ? connectedUsers[socket.id].nickname : null;
-    delete connectedUsers[socket.id];
-    if (nickname) {
-      io.emit('user disconnected', nickname);
+    const user = connectedUsers[socket.id];
+    if (user) {
+      io.emit('user disconnected', user.nickname);
+      delete connectedUsers[socket.id];
       const activeUsers = Object.values(connectedUsers).map(user => user.nickname);
       io.emit('active users', activeUsers);
       console.log('user disconnected:', socket.id);
@@ -68,9 +70,8 @@ io.on('connection', (socket) => {
   });
 });
 
-
 const port = 3000;
-const ipAddress = '192.168.1.5';
+const ipAddress = '192.168.1.12';
 server.listen(port, ipAddress, () => {
   console.log(`Server running on http://${ipAddress}:${port}`);
 });

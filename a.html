@@ -2,9 +2,8 @@
 <html>
 
 <head>
-  <title>Socket.IO chat</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
+  <title>ohfbdfibdfnvbnt</title>
+  <style type="text/css">
     body {
       margin: 0;
       padding: 0;
@@ -51,10 +50,6 @@
 
     #messages>li {
       padding: 0.5rem 1rem;
-
-      word-wrap: break-word;
-      /* Allow long words to break and wrap */
-      white-space: normal;
     }
 
     #messages>li:nth-child(odd) {
@@ -69,7 +64,6 @@
       left: 0;
       right: 0;
       display: flex;
-      flex-wrap: wrap;
       height: 2.5rem;
       font-size: large;
       gap: 0.2rem;
@@ -77,19 +71,13 @@
 
     #input {
       border: none;
-      height: 100%;
       padding: 0 1rem;
       flex-grow: 1;
       border-radius: 2rem;
     }
 
-    .downbuttton {
-      height: 100%;
-    }
-
     #recipient {
       border: none;
-      height: 100%;
       padding: 0 1rem;
       border-radius: 2rem;
     }
@@ -98,9 +86,8 @@
       outline: none;
     }
 
-    #button {
+    #form>button {
       background: #333;
-      height: 100%;
       border: none;
       padding: 0 1rem;
       border-radius: 1rem;
@@ -108,45 +95,14 @@
       color: #fff;
     }
 
-    @media (max-width: 768px) {
+    @media (min-width: 768px) {
 
-      .container {
-        display: flex;
-        height: 100vh;
-      }
-
-      #active_head {
-        text-align: center;
-        font-weight: 500;
-        font-size: x-large;
-      }
-
-      #active-users {
-        font-size: large;
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-      }
-
-      #messages {
-        max-height: calc(100vh - 7.8rem);
-      }
-
-      #form {
-        height: max-content;
-      }
-
-      #input {
-        height: 3rem;
-      }
-
-      .downbuttton {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        gap: 3rem;
-        height: 3rem;
-      }
+    /* Adjust button styling for small screens */
+    #form>button {
+      background-color: red;
+      height: 9rem;
     }
+  }
   </style>
 </head>
 
@@ -161,24 +117,54 @@
       <div class="messages">
         <ul id="messages">
           <!-- Messages content -->
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
+          <li>kb kb jhb</li>
         </ul>
       </div>
       <div class="texts">
         <form id="form" action="">
           <input id="input" autocomplete="off" placeholder="Enter message" />
-          <div class="downbuttton">
-            <select id="recipient">
-              <option value="">--select--</option>
-            </select>
-            <button id="button">Send</button>
-          </div>
+          <select id="recipient">
+            <option value="">--select--</option>
+          </select>
+          <button>Send</button>
         </form>
       </div>
     </div>
   </div>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="script.js"></script>
 </body>
-<script src="index.js"></script>
 
 </html>
