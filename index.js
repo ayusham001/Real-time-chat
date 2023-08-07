@@ -6,7 +6,6 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 
 app.use(express.static(__dirname));
-
 const connectedUsers = {};
 
 app.get('/', (req, res) => {
@@ -17,15 +16,32 @@ io.on('connection', (socket) => {
   console.log('a user connected:', socket.id);
 
   socket.on('setNickname', (nickname) => {
-    if (!connectedUsers[socket.id]) {
-      connectedUsers[socket.id] = { nickname, connection: socket };
+    const existingUser = Object.values(connectedUsers).find((user) => user.nickname === nickname);
+    if (!existingUser) {
+      connectedUsers[socket.id] = { nickname, socket };
       io.emit('user connected', nickname);
 
       // Emit the list of active users only if the nickname is not already present
       const activeUsers = Object.values(connectedUsers).map(user => user.nickname);
       io.emit('active users', activeUsers);
     }
+    else {
+      socket.emit('nickname already exists', nickname);
+    }
   });
+
+  socket.on('useNickname', (nickname) => {
+    const existingUserSocketId = Object.keys(connectedUsers).find(socketId => connectedUsers[socketId].nickname === nickname);
+    if (existingUserSocketId) {
+      delete connectedUsers[existingUserSocketId];
+    }
+    connectedUsers[socket.id] = { nickname, socket };
+    io.emit('user connected', nickname);
+    const activeUsers = Object.values(connectedUsers).map(user => user.nickname);
+    io.emit('active users', activeUsers);
+  });
+
+
 
   socket.on('chat message', (msg, recipient) => {
     console.log('message: ' + msg);

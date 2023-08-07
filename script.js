@@ -5,7 +5,7 @@ var form = document.getElementById('form');
 var input = document.getElementById('input');
 var recipientInput = document.getElementById('recipient');
 const messagesContainer = document.getElementById('messages');
-var currentUser = null; // Store the current user's nickname
+var currentUser = localStorage.getItem("nickname");; // Store the current user's nickname
 
 function Scroll() {
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -16,13 +16,20 @@ function promptForNickname() {
     const nickname = prompt("Enter your nickname...");
     if (nickname) {
         currentUser = nickname;
+        localStorage.setItem("nickname", nickname);
         socket.emit('setNickname', nickname);
     } else {
         promptForNickname(); // Keep asking until a nickname is provided
     }
 }
+if (!currentUser) {
+    promptForNickname(); // Call the function to start prompting for a nickname
+}
+else{
+    socket.emit('useNickname', currentUser);
+}
 
-promptForNickname(); // Call the function to start prompting for a nickname
+
 
 form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -109,7 +116,10 @@ socket.on('user disconnected', (nickname) => {
     }
 });
 
-
+socket.on('nickname already exists',function(nickname){
+    alert(`Nickname ${nickname} already exists! Please enter a different nickname.`);
+    promptForNickname();
+})
 
 socket.on('private message', function (msg) {
     var item = document.createElement('li');
