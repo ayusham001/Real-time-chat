@@ -5,37 +5,29 @@ var form = document.getElementById('form');
 var input = document.getElementById('input');
 var recipientInput = document.getElementById('recipient');
 const messagesContainer = document.getElementById('messages');
-var currentUser = localStorage.getItem('nickname'); 
+var currentUser = null; // Store the current user's nickname
 
 function Scroll() {
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
+// Function to prompt the user for a nickname until they enter one
 function promptForNickname() {
     const nickname = prompt("Enter your nickname...");
     if (nickname) {
         currentUser = nickname;
-        localStorage.setItem('nickname', nickname);
         socket.emit('setNickname', nickname);
     } else {
-        promptForNickname();
+        promptForNickname(); // Keep asking until a nickname is provided
     }
 }
 
+promptForNickname(); // Call the function to start prompting for a nickname
 
-window.addEventListener('beforeunload', function () {
-    localStorage.removeItem('nickname'); 
-});
-
-if (!currentUser) {
-    promptForNickname(); 
-} else {
-    socket.emit('setNickname', currentUser); 
-}
 form.addEventListener('submit', function (e) {
     e.preventDefault();
     if (input.value) {
-        if (input.value.startsWith('/msg ')) { 
+        if (input.value.startsWith('/msg ')) {
             const [command, recipient, ...messageArr] = input.value.split(' ');
             const message = messageArr.join(' ');
             socket.emit('private message', { recipient, message });
@@ -45,6 +37,7 @@ form.addEventListener('submit', function (e) {
         input.value = '';
     }
 });
+
 
 socket.on('chat message', function (msg) {
     var item = document.createElement('li');
@@ -60,8 +53,8 @@ socket.on('chat message', function (msg) {
 });
 
 function updateActiveUsers(activeUsers) {
-    activeUsersList.innerHTML = '';
-    recipientInput.innerHTML = '<option value="">--select--</option>'; 
+    activeUsersList.innerHTML = ''; // Clear the existing list
+    recipientInput.innerHTML = '<option value="">--select--</option>'; // Clear the existing dropdown and add the default option
     activeUsers.forEach(user => {
         var activeUserItem = document.createElement('li');
         activeUserItem.textContent = user;
@@ -76,9 +69,8 @@ function updateActiveUsers(activeUsers) {
 
 
 socket.on('active users', function (activeUsers) {
-    if (!activeUsers.includes(currentUser)) {
-        updateActiveUsers(activeUsers);
-    }
+    // Update the active users list only if the user's nickname is not present
+    updateActiveUsers(activeUsers);
 });
 
 socket.on('user connected', (nickname) => {
