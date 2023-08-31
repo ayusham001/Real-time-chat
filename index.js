@@ -51,11 +51,12 @@ io.on('connection', (socket) => {
         (user) => user.nickname === recipient
       );
       if (recipientSocket) {
-        recipientSocket.connection.emit('private message', {
+        recipientSocket.socket.emit('private message', {
           nickname: senderNickname,
           msg: msg,
           recipient: recipient,
         });
+        
         socket.emit('private message', {
           nickname: senderNickname,
           msg: msg,
@@ -87,7 +88,7 @@ io.on('connection', (socket) => {
 });
 
 const port = 3000;
-const ipAddress = '192.168.1.12';
+const ipAddress = '192.168.1.11';
 server.listen(port, ipAddress, () => {
   console.log(`Server running on http://${ipAddress}:${port}`);
 });
